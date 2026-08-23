@@ -42,9 +42,12 @@ export function useLocation() {
   const requestPermission = useCallback(async () => {
     try {
       if (Platform.OS === 'android') {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION!,
-        );
+        const permission = PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION;
+        if (!permission) {
+          setError('Location permission denied');
+          return;
+        }
+        const granted = await PermissionsAndroid.request(permission);
         if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
           setError('Location permission denied');
           return;
