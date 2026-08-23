@@ -34,9 +34,6 @@ export function useAuth() {
       try {
         const { challenge } = await getAuthChallenge(publicKey);
 
-        const freighter = (
-          Platform.OS === 'web' ? (globalThis as any).window : ({} as FreighterWindow)
-        ).freighter;
         // Resolve which signing method to use, in priority order:
         //   1. Lobstr deep-link (wallet stored as 'lobstr' in persisted store)
         //   2. Freighter browser extension (web / dev)
