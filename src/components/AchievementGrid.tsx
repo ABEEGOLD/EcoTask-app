@@ -61,7 +61,7 @@ export default function AchievementGrid({ stats }: AchievementGridProps) {
           justifyContent: 'space-between',
         }}
       >
-        {achievements.map((a: any) => (
+        {achievements.map(a => (
           <AchievementTile key={a.id} achievement={a} />
         ))}
       </View>

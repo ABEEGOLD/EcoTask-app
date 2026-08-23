@@ -79,6 +79,7 @@ export default function SendTokensScreen() {
         await openLobstrForPayment(
           destination.trim(),
           amount.trim(),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           assetParam as any,
         );
         // Lobstr submits the transaction; we can't await on-chain confirmation
@@ -111,6 +112,7 @@ export default function SendTokensScreen() {
         secretKey,
         destination: destination.trim(),
         amount: amount.trim(),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         asset: assetParam as any,
       });
       void refreshBalance();

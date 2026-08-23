@@ -12,25 +12,29 @@ module.exports = {
       parser: '@typescript-eslint/parser',
       plugins: ['@typescript-eslint'],
       parserOptions: {
-        // project: './tsconfig.json',
+        project: './tsconfig.json',
         tsconfigRootDir: __dirname,
       },
       extends: [
-        // 'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/recommended',
       ],
       rules: {
-        // '@typescript-eslint/no-floating-promises': 'warn',
-        // '@typescript-eslint/no-misused-promises': 'warn',
-        // '@typescript-eslint/await-thenable': 'warn',
-        // '@typescript-eslint/strict-boolean-expressions': [
-        //   'warn',
-        //   {
-        //     allowNullableBoolean: true,
-        //     allowNullableString: true,
-        //     allowNullableNumber: true,
-        //     allowNullableObject: true,
-        //   },
-        // ],
+        '@typescript-eslint/no-floating-promises': 'warn',
+        '@typescript-eslint/no-misused-promises': 'warn',
+        '@typescript-eslint/await-thenable': 'warn',
+        '@typescript-eslint/strict-boolean-expressions': [
+          'warn',
+          {
+            allowNullableBoolean: true,
+            allowNullableString: true,
+            allowNullableNumber: true,
+            allowNullableObject: true,
+          },
+        ],
+        // `void expr` (including as a concise arrow body, e.g.
+        // `onPress={() => void save()}`) is the idiomatic way to satisfy
+        // no-floating-promises for intentionally unawaited promises, which
+        // conflicts with the base config's blanket ban on `void`.
         'no-void': 'off',
       },
     },
