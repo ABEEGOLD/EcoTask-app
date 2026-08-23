@@ -16,7 +16,38 @@ export function useLocation() {
   const lastAcceptedRef = useRef<Location | null>(null);
   const watchIdRef = useRef<number | null>(null);
 
-  const startWatch = useCallback(() => {
+  useEffect(() => {
+    void requestPermission();
+
+    return () => {
+      // Acceptance: clear watcher on unmount
+      if (watchIdRef.current !== null) {
+        Geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function requestPermission() {
+    try {
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION!,
+        );
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          setError('Location permission denied');
+          return;
+        }
+      }
+      setPermissionGranted(true);
+      startWatch();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Location error');
+    }
+  }
+
+  function startWatch() {
     // Continuous watch – low power with native 50m distanceFilter
     watchIdRef.current = Geolocation.watchPosition(
       pos => {

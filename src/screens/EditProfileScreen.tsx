@@ -44,8 +44,11 @@ export default function EditProfileScreen() {
       }
 
       navigation.goBack();
-    } catch (err: any) {
-      Alert.alert('Save Failed', err.message || 'Could not update profile');
+    } catch (err) {
+      Alert.alert(
+        'Save Failed',
+        err instanceof Error ? err.message : 'Could not update profile',
+      );
     } finally {
       setIsSaving(false);
     }
@@ -69,7 +72,17 @@ export default function EditProfileScreen() {
         >
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{ marginBottom: spacing.md }}
+            accessibilityRole="button"
+            accessibilityLabel="Cancel"
+            style={{
+              alignSelf: 'flex-start',
+              paddingVertical: spacing.sm,
+              paddingHorizontal: spacing.md,
+              marginLeft: -spacing.md,
+              marginBottom: spacing.md,
+              minHeight: 44,
+              justifyContent: 'center',
+            }}
           >
             <Text style={{ color: colors.primary, fontSize: 16 }}>Cancel</Text>
           </TouchableOpacity>
@@ -142,7 +155,7 @@ export default function EditProfileScreen() {
           />
 
           <TouchableOpacity
-            onPress={handleSave}
+            onPress={() => void handleSave()}
             disabled={isSaving}
             style={{
               padding: spacing.md,

@@ -56,7 +56,7 @@ export default function SubmitProofScreen() {
 
   useEffect(() => {
     if (!hasPermission) {
-      requestPermission();
+      void requestPermission();
     }
   }, [hasPermission, requestPermission]);
 
@@ -70,8 +70,11 @@ export default function SubmitProofScreen() {
       });
       setPhotoUri(`file://${photo.path}`);
       setCapturedAt(new Date().toISOString());
-    } catch (err: any) {
-      Alert.alert('Camera Error', err.message || 'Failed to capture photo');
+    } catch (err) {
+      Alert.alert(
+        'Camera Error',
+        err instanceof Error ? err.message : 'Failed to capture photo',
+      );
     }
   }, []);
 
@@ -130,7 +133,7 @@ export default function SubmitProofScreen() {
         const token = result.rewardToken || route.params.rewardToken || 'ECO';
         const title =
           result.taskTitle || route.params.taskTitle || 'Task Completed';
-        scheduleLocalNotification({
+        void scheduleLocalNotification({
           title: 'Reward confirmed! 🎉',
           body: `You earned ${amount} ${token} for "${title}".`,
           type: NOTIFICATION_TYPES.REWARD_CONFIRMED,
@@ -197,8 +200,22 @@ export default function SubmitProofScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <View style={{ padding: spacing.lg, paddingTop: spacing.xl }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={{ color: colors.primary, fontSize: 16 }}>Back</Text>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          accessibilityRole="button"
+          accessibilityLabel="Back"
+          style={{
+            alignSelf: 'flex-start',
+            paddingVertical: spacing.sm,
+            paddingHorizontal: spacing.md,
+            marginLeft: -spacing.md,
+            minHeight: 44,
+            justifyContent: 'center',
+          }}
+        >
+          <Text style={{ color: colors.primary, fontSize: 16 }}>
+            {'\u2190'} Back
+          </Text>
         </TouchableOpacity>
         <Text
           style={{
@@ -249,8 +266,15 @@ export default function SubmitProofScreen() {
             </Text>
             {hasPermission === false && (
               <TouchableOpacity
-                onPress={requestPermission}
-                style={{ marginTop: spacing.md, padding: spacing.sm }}
+                onPress={() => void requestPermission()}
+                accessibilityRole="button"
+                style={{
+                  marginTop: spacing.md,
+                  paddingVertical: spacing.sm,
+                  paddingHorizontal: spacing.md,
+                  minHeight: 44,
+                  justifyContent: 'center',
+                }}
               >
                 <Text style={{ color: colors.primary }}>Grant Permission</Text>
               </TouchableOpacity>
@@ -317,7 +341,7 @@ export default function SubmitProofScreen() {
       >
         {!photoUri ? (
           <TouchableOpacity
-            onPress={handleCapture}
+            onPress={() => void handleCapture()}
             disabled={isSubmitting}
             style={{
               flex: 1,
@@ -357,7 +381,7 @@ export default function SubmitProofScreen() {
               <Text style={{ color: colors.text }}>Retake</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={handleSubmit}
+              onPress={() => void handleSubmit()}
               disabled={isSubmitting}
               style={{
                 flex: 1,

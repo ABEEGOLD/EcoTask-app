@@ -271,7 +271,10 @@ export default function MapScreen() {
             />
           )}
           {error != null && (
-            <TouchableOpacity onPress={refresh} style={styles.retryBtn}>
+            <TouchableOpacity
+              onPress={() => void refresh()}
+              style={styles.retryBtn}
+            >
               <Text style={styles.retryText}>Retry</Text>
             </TouchableOpacity>
           )}
@@ -391,6 +394,9 @@ const styles = StyleSheet.create({
   },
   retryBtn: {
     marginLeft: spacing.sm,
+    paddingHorizontal: spacing.sm,
+    minHeight: 44,
+    justifyContent: 'center',
   },
   retryText: {
     color: colors.primary,
@@ -421,6 +427,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
     borderRadius: 18,
+    minHeight: 44,
+    justifyContent: 'center',
   },
   radiusOptActive: {
     backgroundColor: colors.primary,
