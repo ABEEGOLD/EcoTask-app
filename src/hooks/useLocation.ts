@@ -12,7 +12,6 @@ export function useLocation() {
   const [permissionGranted, setPermissionGranted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const lastAcceptedRef = useRef<Location | null>(null);
   const watchIdRef = useRef<number | null>(null);
 
   const startWatch = useCallback(() => {
@@ -24,7 +23,6 @@ export function useLocation() {
           lng: pos.coords.longitude,
         };
 
-        lastAcceptedRef.current = next;
         setLocation(next);
         setError(null);
       },
@@ -78,7 +76,6 @@ export function useLocation() {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude,
         };
-        lastAcceptedRef.current = next;
         setLocation(next);
         setError(null);
       },
